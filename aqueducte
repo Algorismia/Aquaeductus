@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+import sys
+import math
+
+ALPHA = 0
+BETA = 0
+MAX_HEIGHT = 0
+NUM_POINTS = 0
+
+# points
+
+class Point:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+def x_distance(first_point: Point, second_point: Point) -> int:
+    return second_point.x - first_point.x
+
+
+def y_distance(first_point: Point, second_point: Point) -> int:
+    return second_point.y - first_point.y
+
+
+def distance(first_point: Point, second_point: Point) -> float:
+    return math.sqrt(pow(x_distance(first_point, second_point), 2) + pow(y_distance(first_point, second_point), 2))
+
+
+def middle_x(first_point: Point, second_point: Point, y) -> Point:
+    return Point((first_point.x + second_point.x) / 2, y)
+
+
+# cost
+
+def cost_arch(first_point: Point, second_point: Point):
+    return BETA * pow(x_distance(first_point, second_point), 2)
+
+
+def cost_support(point: Point):
+    return ALPHA * (MAX_HEIGHT - point.y)
+
+
+# arch valid
+
+def valid_arch(points: list[Point], first_point_index: int, second_point_index: int):
+    first_point = points[first_point_index]
+    second_point = points[second_point_index]
+    init_arch = max(first_point.y, second_point.y)
+    radius_value = x_distance(first_point, second_point) / 2
+    radius_point = middle_x(first_point, second_point, init_arch)
+    if init_arch + radius_value > MAX_HEIGHT:
+        return False
+    for i in range(first_point_index + 1, second_point_index):
+        if points[i].y >= init_arch and (distance(radius_point, points[i]) - (radius_value * radius_value)) > 0:
+            return False
+    return True
+
+
+def get_minimum(points: list, current_point_index=0):
+    print(f"recursing, {current_point_index}")
+    if current_point_index + 2 == NUM_POINTS:
+        if valid_arch(points, current_point_index, current_point_index + 1):
+            return cost_arch(points[current_point_index], points[current_point_index + 1]) + cost_support(points[current_point_index]) + cost_support(points[current_point_index + 1]), True
+    if current_point_index + 1 == NUM_POINTS:
+        return cost_support(points[current_point_index]), True
+    min = 0
+    for i in range(current_point_index + 1, NUM_POINTS):
+        if valid_arch(points, current_point_index, i):
+            cost_previous, correct = get_minimum(points, i)
+            if correct:
+                cost_previous += cost_support(points[current_point_index])
+                cost_previous += cost_arch(points[current_point_index], points[i])
+                if min == 0 or cost_previous < min:
+                    min = cost_previous
+    if min == 0:
+        return min, False
+    else:
+        return min, True
+
+
+def get_value_of_globals_from_file(lines: list[str]):
+    global ALPHA, BETA, MAX_HEIGHT, NUM_POINTS
+    first = lines[0].split(" ")
+    NUM_POINTS = int(first[0])
+    MAX_HEIGHT = int(first[1])
+    ALPHA = int(first[2])
+    BETA = int(first[3])
+
+
+def get_point_list_from_file(file_lines: list[str]) -> list:
+    list = []
+    for i in range(1, NUM_POINTS + 1):
+        tuple = file_lines[i].split("\n")[0]
+        x, y = tuple.split(" ")
+        list.append(Point(int(x), int(y)))
+    return list
+
+
+if __name__ == "__main__":
+    sys.setrecursionlimit(100000)
+    file = open(sys.argv[1], "r")
+    lines = file.readlines()
+    file.close()
+    get_value_of_globals_from_file(lines)
+    list_points = get_point_list_from_file(lines)
+    cost, finished = get_minimum(list_points)
+    if not finished:
+        print("impossible")
+    else:
+        print(cost)
