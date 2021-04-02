@@ -168,13 +168,10 @@ Land get_land_from_file(string file_name) {
     return land;
 }
 
-
 int main(int argc, char **argv) {
     string file_name = argv[1];
     Land land = get_land_from_file(file_name);
     long long int minimum = land.get_minimum_cost();
-    if (minimum == IMPOSSIBLE)
-        cout << "impossible" << "\n" ;
-    else 
-        cout << minimum << "\n";
+    string result = minimum == IMPOSSIBLE ? "impossible" : to_string(minimum);
+    cout << result << "\n" ;
 }
