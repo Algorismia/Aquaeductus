@@ -1,12 +1,26 @@
 \documentclass[12pt, letterpaper]{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 \usepackage{graphicx}
 \usepackage{flafter} % needed for figures
 \usepackage{hyperref} % needed for a clickable table of contents
 \usepackage[export]{adjustbox} % needed for adjustable images
 \usepackage{polyglossia} % needed for catalan support
-
 \setmainlanguage{catalan}
 \graphicspath{ {images/} }
+
+% rename for quotes
+\let\oldquote\quote
+\let\endoldquote\endquote
+\renewenvironment{quote}[2][]
+  {\if\relax\detokenize{#1}\relax
+     \def\quoteauthor{#2}%
+   \else
+     \def\quoteauthor{#2~---~#1}%
+   \fi
+   \oldquote}
+  {\par\nobreak\smallskip\hfill(\quoteauthor)%
+   \endoldquote\addvspace{\bigskipamount}}
 
 % information
 \title{\textbf{Pràctica 1 || Aquæductus}}
@@ -15,7 +29,6 @@
 
 % document
 \begin{document}
-    
 % title
 \maketitle
 \thispagestyle{empty}
@@ -25,4 +38,70 @@
 \newpage
 
 % begin contents
+\section{Funcionament algorisme}
+
+% backtracking
+\subsection{Primera idea: Backtracking}
+
+\subsubsection{Per què no utilitzar Backtracking en aquest cas}
+cost de $O(n!)$ .
+
+% principi optimitat
+\subsection{Alternativa a backtracking: Principi d'optimitat}
+Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
+\begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sugui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
+\end{quote}
+
+Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construida eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
+
+\subsubsection{Aplicació i funcionament en el nostre cas d'ús}
+\subsubsection{Demostració per reducció al absurd}
+Donat un aqueducte que va d'un punt A a un punt J i que té recorregut R\textsubscript{a...j} és el óptim (figura: \ref{demostracio:atoj}).
+
+\begin{figure}[hbt!]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+% nodes
+\node[roundnode]      (A)                              {A};
+\node[roundnode]      (J)       [right=3cm of A]           {J};
+% lines
+    \draw[->] (A.east) -- (J.west) node[midway, below] {R\textsubscript{a...j}};
+\end{tikzpicture}
+\caption{Aqueducte de punt A a punt J}
+\label{demostracio:atoj}
+\end{center}
+\end{figure}
+
+Ara assumirem que aquest recorregut passa per el punt K, per tant ara podem separar el recorregut com R\textsubscript{a...k} \& R\textsubscript{k...j} (FIGURA TAL) i que del punt A al punt K pot haver-hi un recorregut mes optim, que anomenarem R'\textsubscript{a...k} 
+
+\begin{tikzpicture}[
+roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},
+]
+%Nodes
+\node[roundnode]      (maintopic)                              {A};
+\node[roundnode]      (rightsquare)      [right=of maintopic] {k};
+\node[roundnode]      (rightsquare2)      [right=of rightsquare] {J};
+
+%Lines
+\draw[->] (maintopic.east) -- (rightsquare.west);
+\draw[->] (rightsquare.east) -- (rightsquare2.west);
+\end{tikzpicture}
+
+Si R'\textsubscript{a...k} és més òptim que R\textsubscript{a...k}, llavors vol dir que:
+R'\textsubscript{a...k} < R\textsubscript{a...k}.
+Llavors:
+R'\textsubscript{a...k} + R\textsubscript{k...j} < R\textsubscript{a...k} + R\textsubscript{k...j} 
+
+Però aquesta afirmació NO pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
+
+
+\section{Cost algorisme}
+\subsection{Iteratiu}
+\subsection{Recursiu}
+    
+\section{Problemes/consideracions}
+\subsection{Nombres en c++}
+
+\section{Conclusions}
+
 \end{document}
