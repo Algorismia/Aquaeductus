@@ -121,7 +121,6 @@ class Land {
 
   public:
 
-
     Land(int num_points, int height, int alpha, int beta) {
         this->NUM_POINTS = num_points;
         this->MAX_HEIGHT = height;
