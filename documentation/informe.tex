@@ -1,13 +1,23 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage{tikz}
+\usepackage{tkz-euclide}
 \usetikzlibrary{positioning}
+\usepackage{fancybox}
 \usepackage{graphicx}
 \usepackage{flafter} % needed for figures
 \usepackage{hyperref} % needed for a clickable table of contents
 \usepackage[export]{adjustbox} % needed for adjustable images
 \usepackage{polyglossia} % needed for catalan support
 \setmainlanguage{catalan}
+\usepackage{listings}
 \graphicspath{ {images/} }
+
+% centered box
+\makeatletter
+\newenvironment{CenteredBox}{% 
+\begin{Sbox}}{% Save the content in a box
+\end{Sbox}\centerline{\parbox{\wd\@Sbox}{\TheSbox}}}% And output it centered
+\makeatother
 
 % rename for quotes
 \let\oldquote\quote
@@ -47,6 +57,7 @@
 cost de $O(n!)$ .
 
 % principi optimitat
+\newpage
 \subsection{Alternativa a backtracking: Principi d'optimitat}
 Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
 \begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sugui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
@@ -54,17 +65,93 @@ Abans de poder comentar la solució, hem d'entendre que és el principi d'optimi
 
 Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construida eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
 
+% nostre cas d'us
 \subsubsection{Aplicació i funcionament en el nostre cas d'ús}
+En el nostre problema dels aqueductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que veiem que la solució és construida eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
+
+
+Donada la següent entrada: 
+
+
+\begin{center}
+\begin{figure}[htbp]
+\begin{CenteredBox}
+\begin{lstlisting}[language={}]
+5 6 180 20
+0 0
+2 2
+3 1
+5 3
+7 2
+\end{lstlisting}
+\end{CenteredBox}
+\caption{Entrada exemple}
+\label{demostracio:entradaexemple}
+\end{figure}
+\end{center}
+
+
+On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda de la següent manera:\\
+
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}
+   \tkzInit[xmax=7,ymax=6,xmin=0,ymin=0]
+   \tkzGrid
+   \tkzAxeXY
+   \draw[thick] (0,0) -- (2, 2); 
+   \draw[thick] (2,2) -- (3, 1); 
+   \draw[thick] (3,1) -- (5, 3); 
+   \draw[thick] (5,3) -- (7, 2); 
+   \draw[thick, red] (0,6) -- (7, 6) node[midway, above] {height (6)}; 
+    \foreach \Point/\PointLabel in {(0,0)/A, (2,2)/B, (3,1)/C, (5,3)/D, (7,2)/E}
+   \draw[fill=black] \Point circle (0.05) node[above] {$\PointLabel$};
+  \end{tikzpicture}
+\caption{Exemple representat eix de coordenades}
+\label{demostracio:exemplecoordenades}
+\end{center}
+\end{figure}
+
+Si ho representem en forma de digraf (ja descartant les opcions que no són vàlides) ens queda el següent:
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (B)       [right=2cm of A]       {B};
+    \node[roundnode]      (C)       [right=2cm of B]       {C};
+    \node[roundnode]      (D)       [right=2cm of C]       {D};
+    \node[roundnode]      (E)       [right=2cm of D]       {E};
+    % lines
+    \draw[->] (A.east) -- (B.west);
+    \draw[->] (A.east) to[out=20,in=130] (C);
+    \draw[->] (A.east) to[out=50,in=140] (D);
+    \draw[->] (A.east) to[out=80,in=160] (E);
+    \draw[->] (B.east) -- (C.west);
+    \draw[->] (B.east) to[out=-20,in=-130] (D);
+    \draw[->] (B.east) to[out=-50,in=-140] (E);
+    \draw[->] (C.east) -- (D.west);
+    \draw[->] (C.east) to[out=-20,in=-130] (E.west);
+    \draw[->] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{Exemple representat en forma de dígraf}
+\label{demostracio:atoj}
+\end{center}
+\end{figure}
+
+% demostracio algorisme
+\newpage
 \subsubsection{Demostració per reducció al absurd}
 Donat un aqueducte que va d'un punt A a un punt J i que té recorregut R\textsubscript{a...j} és el óptim (figura: \ref{demostracio:atoj}).
 
-\begin{figure}[hbt!]
+\begin{figure}[htbp]
 \begin{center}
 \begin{tikzpicture}[roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
-% nodes
-\node[roundnode]      (A)                              {A};
-\node[roundnode]      (J)       [right=3cm of A]           {J};
-% lines
+    % nodes
+    \node[roundnode]      (A)                                  {A};
+    \node[roundnode]      (J)       [right=3cm of A]           {J};
+    % lines
     \draw[->] (A.east) -- (J.west) node[midway, below] {R\textsubscript{a...j}};
 \end{tikzpicture}
 \caption{Aqueducte de punt A a punt J}
@@ -72,25 +159,51 @@ Donat un aqueducte que va d'un punt A a un punt J i que té recorregut R\textsub
 \end{center}
 \end{figure}
 
-Ara assumirem que aquest recorregut passa per el punt K, per tant ara podem separar el recorregut com R\textsubscript{a...k} \& R\textsubscript{k...j} (FIGURA TAL) i que del punt A al punt K pot haver-hi un recorregut mes optim, que anomenarem R'\textsubscript{a...k} 
+Assumirem també que aquest recorregut passa per el punt K, per tant ara podem separar el recorregut com R\textsubscript{a...k} \& R\textsubscript{k...j} (figura \ref{demostracio:atoktoj})
 
-\begin{tikzpicture}[
-roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},
-]
-%Nodes
-\node[roundnode]      (maintopic)                              {A};
-\node[roundnode]      (rightsquare)      [right=of maintopic] {k};
-\node[roundnode]      (rightsquare2)      [right=of rightsquare] {J};
-
-%Lines
-\draw[->] (maintopic.east) -- (rightsquare.west);
-\draw[->] (rightsquare.east) -- (rightsquare2.west);
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (K)        [right=3cm of A]      {K};
+    \node[roundnode]      (J)        [right=3cm of K]      {J};
+    % lines
+    \draw[->] (A.east) -- (K.west) node[midway, below]{R\textsubscript{a...k}};
+    \draw[->] (K.east) -- (J.west) node[midway, below]{R\textsubscript{k...j}};
 \end{tikzpicture}
+\caption{Aqueducte de punt A a punt J passant per K}
+\label{demostracio:atoktoj}
+\end{center}
+\end{figure}
 
-Si R'\textsubscript{a...k} és més òptim que R\textsubscript{a...k}, llavors vol dir que:
-R'\textsubscript{a...k} < R\textsubscript{a...k}.
-Llavors:
-R'\textsubscript{a...k} + R\textsubscript{k...j} < R\textsubscript{a...k} + R\textsubscript{k...j} 
+A partir de la figura \ref{demostracio:atoktoj}, considerarem que del punt A al punt K pot haver-hi un recorregut mes optim, que anomenarem R'\textsubscript{a...k}.
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (K)        [right=3cm of A]      {K};
+    \node[roundnode]      (J)        [right=3cm of K]      {J};
+    % lines
+    \draw[->] (A.east) -- (K.west) node[midway, below]{R\textsubscript{a...k}};
+    \draw[->] (K.east) -- (J.west) node[midway, below]{R\textsubscript{k...j}};
+    \draw[->, red] (A) to[out=-70,in=-100] (K) node[xshift =- 2cm, yshift =-1.8cm]{R'\textsubscript{a...k}};
+\end{tikzpicture}
+\caption{Graf que representa un posible R'\textsubscript{a...k}}
+\label{demostracio:atoktojhypotetical}
+\end{center}
+\end{figure}
+
+Si R'\textsubscript{a...k} és més òptim que R\textsubscript{a...k}, llavors vol dir que: \\
+\begin{center}
+R'\textsubscript{a...k} < R\textsubscript{a...k}.\\
+\end{center}
+Llavors:\\
+\begin{center}
+\textbf{R'\textsubscript{a...k} + R\textsubscript{k...j} < R\textsubscript{a...k} + R\textsubscript{k...j}} \\
+\end{center}
 
 Però aquesta afirmació NO pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
 
