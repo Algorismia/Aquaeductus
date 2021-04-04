@@ -91,7 +91,7 @@ Donada la següent entrada:
 \end{center}
 
 
-On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda de la següent manera:\\
+On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda com la figura \ref{grafic:exemplecoordenades}, en canvi, si ho volem veure en forma de digraf (ja descartant opcions que no són vàlides) ens queda com a resultat la figura \ref{grafic:digraf}\\
 
 
 \begin{figure}[htbp]
@@ -109,11 +109,10 @@ On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i
    \draw[fill=black] \Point circle (0.05) node[above] {$\PointLabel$};
   \end{tikzpicture}
 \caption{Exemple representat eix de coordenades}
-\label{demostracio:exemplecoordenades}
+\label{grafic:exemplecoordenades}
 \end{center}
 \end{figure}
 
-Si ho representem en forma de digraf (ja descartant les opcions que no són vàlides) ens queda el següent:
 \begin{figure}[htbp]
 \begin{center}
 \begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},]
@@ -136,7 +135,147 @@ Si ho representem en forma de digraf (ja descartant les opcions que no són vàl
     \draw[->] (D.east) -- (E.west);
 \end{tikzpicture}
 \caption{Exemple representat en forma de dígraf}
-\label{demostracio:atoj}
+\label{grafic:digraf}
+\end{center}
+\end{figure}
+
+Finalment, anomenarem la funcio F(x) com el minim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
+                    donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (B)       [right=2cm of A]       {B};
+    \node[roundnode]      (C)       [right=2cm of B]       {C};
+    \node[roundnode]      (D)       [right=2cm of C]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    % lines
+    \draw[->] (A.east) -- (B.west);
+    \draw[->] (A.east) to[out=20,in=130] (C);
+    \draw[->] (A.east) to[out=50,in=140] (D);
+    \draw[->] (A.east) to[out=80,in=160] (E);
+    \draw[->] (B.east) -- (C.west);
+    \draw[->] (B.east) to[out=-20,in=-130] (D);
+    \draw[->] (B.east) to[out=-50,in=-140] (E);
+    \draw[->] (C.east) -- (D.west);
+    \draw[->] (C.east) to[out=-20,in=-130] (E.west);
+    \draw[->] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{resultat de F(E)}
+\label{resultat:fdeE}
+\end{center}
+\end{figure}
+
+
+En el cas de F(D), únicament té una opció possible, anar de D a F, per tant el cost minim sera aquest recorregut (figura \ref{resultat:fdeD}).\\
+
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
+                    donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (B)       [right=2cm of A]       {B};
+    \node[roundnode]      (C)       [right=2cm of B]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    % lines
+    \draw[->] (A.east) -- (B.west);
+    \draw[->] (A.east) to[out=20,in=130] (C);
+    \draw[->] (A.east) to[out=50,in=140] (D);
+    \draw[->] (A.east) to[out=80,in=160] (E);
+    \draw[->] (B.east) -- (C.west);
+    \draw[->] (B.east) to[out=-20,in=-130] (D);
+    \draw[->] (B.east) to[out=-50,in=-140] (E);
+    \draw[->] (C.east) -- (D.west);
+    \draw[->] (C.east) to[out=-20,in=-130] (E.west);
+    \draw[->, green] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{resultat de F(D)}
+\label{resultat:fdeD}
+\end{center}
+\end{figure}
+
+
+En el cas de F(C), té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + F(D) i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + F(D) ens dona 2320. Per tant, el cost minim desde C sera anant de C a E (figura \ref{resultat:fdeC}).\\
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
+                    donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[roundnode]      (B)       [right=2cm of A]       {B};
+    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    % lines
+    \draw[->] (A.east) -- (B.west);
+    \draw[->] (A.east) to[out=20,in=130] (C);
+    \draw[->] (A.east) to[out=50,in=140] (D);
+    \draw[->] (A.east) to[out=80,in=160] (E);
+    \draw[->] (B.east) -- (C.west);
+    \draw[->] (B.east) to[out=-20,in=-130] (D);
+    \draw[->] (B.east) to[out=-50,in=-140] (E);
+    \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
+    \draw[->, green] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{resultat de F(C)}
+\label{resultat:fdeC}
+\end{center}
+\end{figure}
+
+En el cas de F(B), farem el mateix que amb F(C). Calcularem quant val el cost de B a E, de B a C + F(C) i de B a D + F(D) i agafarem el minim. En aquest cas el minim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
+                    donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[roundnode]      (A)                              {A};
+    \node[donenode]      (B)       [right=2cm of A, label=below:F(B) -> 1940]       {B};
+    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    % lines
+    \draw[->] (A.east) -- (B.west);
+    \draw[->] (A.east) to[out=20,in=130] (C);
+    \draw[->] (A.east) to[out=50,in=140] (D);
+    \draw[->] (A.east) to[out=80,in=160] (E);
+    \draw[->, green] (B.east) to[out=-50,in=-140] (E);
+    \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
+    \draw[->, green] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{resultat de F(B)}
+\label{resultat:fdeB}
+\end{center}
+\end{figure}
+
+
+Finalment, en el cas de F(A), haurem de calcular el cost de A a E, de A a B + F(B), de A a C + F(C) i de A a D + F(D) i agafar el minim cost. En aquest cas el minim es de A a E (2780) (figura \ref{resultat:final})
+
+
+\begin{figure}[htbp]
+\begin{center}
+\begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
+                    donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
+    % nodes
+    \node[donenode]      (A)       [label=below:\textbf{F(A) -> 2780}]                       {A};
+    \node[donenode]      (B)       [right=2cm of A, label=below:F(B) -> 1940]       {B};
+    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]          {E};
+    % lines
+    \draw[->, green] (A.east) to[out=20,in=160] (E);
+    \draw[->, green] (B.east) to[out=-50,in=-140] (E);
+    \draw[->, green] (C.east) to[out=-50,in=-130] (E.west);
+    \draw[->, green] (D.east) -- (E.west);
+\end{tikzpicture}
+\caption{resultat del aqueducte minim (F(A))}
+\label{resultat:final}
 \end{center}
 \end{figure}
 
@@ -210,10 +349,13 @@ Però aquesta afirmació NO pot ser certa! Ja que en un principi hem assegurat q
 
 \section{Cost algorisme}
 \subsection{Iteratiu}
+$O(n^{3})$ 
 \subsection{Recursiu}
+$O(n^{3})$ 
     
 \section{Problemes/consideracions}
 \subsection{Nombres en c++}
+Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a c++. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a c++ el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer i double, i s'hagués d'utilitzar tipus com per exemple long long int o unsigned long long int.
 
 \section{Conclusions}
 
