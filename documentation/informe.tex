@@ -11,6 +11,7 @@
 \usepackage{polyglossia} % needed for catalan support
 \setmainlanguage{catalan}
 \usepackage{listings}
+\usepackage{appendix}
 \graphicspath{ {images/} }
 
 % centered box
@@ -32,6 +33,17 @@
    \oldquote}
   {\par\nobreak\smallskip\hfill(\quoteauthor)%
    \endoldquote\addvspace{\bigskipamount}}
+
+% for appendix
+\makeatletter
+\newcommand\appendix@section[1]{%
+  \refstepcounter{section}%
+  \orig@section*{Appendix \@Alph\c@section: #1}%
+  \addcontentsline{toc}{section}{Appendix \@Alph\c@section: #1}%
+}
+\let\orig@section\section
+\g@addto@macro\appendix{\let\section\appendix@section}
+\makeatother
 
 % information
 \title{\textbf{Pràctica 1 || Aquæductus}}
@@ -68,6 +80,7 @@ Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt
 
 % nostre cas d'us
 \subsubsection{Aplicació i funcionament en el nostre cas d'ús}
+\label{seccio:funcionament}
 En el nostre problema dels aqueductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que veiem que la solució és construida eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
 
 
@@ -140,7 +153,7 @@ On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i
 \end{center}
 \end{figure}
 
-Finalment, anomenarem la funcio F(x) com el minim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
+Finalment, anomenarem la funcio $f(x)$ com el minim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -151,7 +164,7 @@ Finalment, anomenarem la funcio F(x) com el minim cost per anar al node E. En el
     \node[roundnode]      (B)       [right=2cm of A]       {B};
     \node[roundnode]      (C)       [right=2cm of B]       {C};
     \node[roundnode]      (D)       [right=2cm of C]       {D};
-    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    \node[donenode]      (E)       [right=2cm of D, label=below:$f(E)$ -> 0]       {E};
     % lines
     \draw[->] (A.east) -- (B.west);
     \draw[->] (A.east) to[out=20,in=130] (C);
@@ -164,13 +177,13 @@ Finalment, anomenarem la funcio F(x) com el minim cost per anar al node E. En el
     \draw[->] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->] (D.east) -- (E.west);
 \end{tikzpicture}
-\caption{resultat de F(E)}
+    \caption{resultat de $f(E)$}
 \label{resultat:fdeE}
 \end{center}
 \end{figure}
 
 
-En el cas de F(D), únicament té una opció possible, anar de D a F, per tant el cost minim sera aquest recorregut (figura \ref{resultat:fdeD}).\\
+En el cas de $f(D)$, únicament té una opció possible, anar de D a F, per tant el cost minim sera aquest recorregut (figura \ref{resultat:fdeD}).\\
 
 
 \begin{figure}[htbp]
@@ -181,8 +194,8 @@ En el cas de F(D), únicament té una opció possible, anar de D a F, per tant e
     \node[roundnode]      (A)                              {A};
     \node[roundnode]      (B)       [right=2cm of A]       {B};
     \node[roundnode]      (C)       [right=2cm of B]       {C};
-    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
-    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    \node[donenode]      (D)       [right=2cm of C, label=below:$f(D)$ -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:$f(E)$ -> 0]       {E};
     % lines
     \draw[->] (A.east) -- (B.west);
     \draw[->] (A.east) to[out=20,in=130] (C);
@@ -195,13 +208,13 @@ En el cas de F(D), únicament té una opció possible, anar de D a F, per tant e
     \draw[->] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-\caption{resultat de F(D)}
+    \caption{resultat de $f(D)$}
 \label{resultat:fdeD}
 \end{center}
 \end{figure}
 
 
-En el cas de F(C), té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + F(D) i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + F(D) ens dona 2320. Per tant, el cost minim desde C sera anant de C a E (figura \ref{resultat:fdeC}).\\
+En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + $f(D)$ i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + $f(D)$ ens dona 2320. Per tant, el cost minim desde C sera anant de C a E (figura \ref{resultat:fdeC}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -210,9 +223,9 @@ En el cas de F(C), té l'opció d'anar a D o d'anar a E. En aquest cas calculare
     % nodes
     \node[roundnode]      (A)                              {A};
     \node[roundnode]      (B)       [right=2cm of A]       {B};
-    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
-    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
-    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    \node[donenode]      (C)       [right=2cm of B, label=below:$f(C)$ -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:$f(D)$ -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:$f(E)$ -> 0]       {E};
     % lines
     \draw[->] (A.east) -- (B.west);
     \draw[->] (A.east) to[out=20,in=130] (C);
@@ -224,12 +237,12 @@ En el cas de F(C), té l'opció d'anar a D o d'anar a E. En aquest cas calculare
     \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-\caption{resultat de F(C)}
+    \caption{resultat de $f(C)$}
 \label{resultat:fdeC}
 \end{center}
 \end{figure}
 
-En el cas de F(B), farem el mateix que amb F(C). Calcularem quant val el cost de B a E, de B a C + F(C) i de B a D + F(D) i agafarem el minim. En aquest cas el minim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
+En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cost de B a E, de B a C + $f(C)$ i de B a D + $f(D)$ i agafarem el minim. En aquest cas el minim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -237,10 +250,10 @@ En el cas de F(B), farem el mateix que amb F(C). Calcularem quant val el cost de
                     donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
     % nodes
     \node[roundnode]      (A)                              {A};
-    \node[donenode]      (B)       [right=2cm of A, label=below:F(B) -> 1940]       {B};
-    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
-    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
-    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]       {E};
+    \node[donenode]      (B)       [right=2cm of A, label=below:$f(B)$ -> 1940]       {B};
+    \node[donenode]      (C)       [right=2cm of B, label=below:$f(C)$ -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:$f(D)$ -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:$f(E)$ -> 0]       {E};
     % lines
     \draw[->] (A.east) -- (B.west);
     \draw[->] (A.east) to[out=20,in=130] (C);
@@ -250,13 +263,13 @@ En el cas de F(B), farem el mateix que amb F(C). Calcularem quant val el cost de
     \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-\caption{resultat de F(B)}
+    \caption{resultat de $f(B)$}
 \label{resultat:fdeB}
 \end{center}
 \end{figure}
 
 
-Finalment, en el cas de F(A), haurem de calcular el cost de A a E, de A a B + F(B), de A a C + F(C) i de A a D + F(D) i agafar el minim cost. En aquest cas el minim es de A a E (2780) (figura \ref{resultat:final})
+Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + $f(B)$, de A a C + $f(C)$ i de A a D + $f(D)$ i agafar el minim cost. En aquest cas el minim es de A a E (2780) (figura \ref{resultat:final})
 
 
 \begin{figure}[htbp]
@@ -264,18 +277,18 @@ Finalment, en el cas de F(A), haurem de calcular el cost de A a E, de A a B + F(
 \begin{tikzpicture}[roundnode/.style={circle, draw=black!60, very thick, minimum size=7mm},
                     donenode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},]
     % nodes
-    \node[donenode]      (A)       [label=below:\textbf{F(A) -> 2780}]                       {A};
-    \node[donenode]      (B)       [right=2cm of A, label=below:F(B) -> 1940]       {B};
-    \node[donenode]      (C)       [right=2cm of B, label=below:F(C) -> 1940]       {C};
-    \node[donenode]      (D)       [right=2cm of C, label=below:F(D) -> 1340]       {D};
-    \node[donenode]      (E)       [right=2cm of D, label=below:F(E) -> 0]          {E};
+    \node[donenode]      (A)       [label=below:\textbf{$f(A)$ -> 2780}]                       {A};
+    \node[donenode]      (B)       [right=2cm of A, label=below:$f(B)$ -> 1940]       {B};
+    \node[donenode]      (C)       [right=2cm of B, label=below:$f(C)$ -> 1940]       {C};
+    \node[donenode]      (D)       [right=2cm of C, label=below:$f(D)$ -> 1340]       {D};
+    \node[donenode]      (E)       [right=2cm of D, label=below:$f(E)$ -> 0]          {E};
     % lines
     \draw[->, green] (A.east) to[out=20,in=160] (E);
     \draw[->, green] (B.east) to[out=-50,in=-140] (E);
     \draw[->, green] (C.east) to[out=-50,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-\caption{resultat del aqueducte minim (F(A))}
+    \caption{resultat del aqueducte minim ($f(A)$)}
 \label{resultat:final}
 \end{center}
 \end{figure}
@@ -348,6 +361,16 @@ Llavors:\\
 Però aquesta afirmació NO pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
 
 
+\subsubsection{Especificació formal}
+Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equacio de Bellman (ja que tal i com s'ha dit a la subseccio \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
+
+\begin{center}
+\begin{equation}
+v(x_{0}) = min(f(x_{0}) + v(x_{1}))
+\end{equation}
+On $v(x)$ es la formula per a calclar el cost minim del aqueducte, $x_{0}$ es el primer pilar del aqueducte i $x_{1}$ es el resultat d'aplicar $v(x)$ al pilar que va despres de $x_{0}$
+\end{center}
+
 \section{Cost algorisme}
 \subsection{Iteratiu}
 $O(n^{3})$ 
@@ -356,8 +379,15 @@ $O(n^{3})$
     
 \section{Problemes/consideracions}
 \subsection{Nombres en \cpluspluslogo}
-Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer i double, i s'hagués d'utilitzar tipus com per exemple long long int o unsigned long long int.
+Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
 
 \section{Conclusions}
+
+\appendix
+\section{Pseudocodi algorisme iteratiu}
+\label{pseudocodiiteratiu}
+
+\section{Pseudocodi algorisme recursiu}
+\label{pseudocodirecursiu}
 
 \end{document}
