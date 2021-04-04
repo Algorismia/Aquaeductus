@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
-#include <map>
 #include <fstream>
 #include <vector>
 
@@ -49,6 +48,7 @@ class Point {
 class Land {        
 
   #define IMPOSSIBLE -1
+  #define NON_CALCULATED 0
 
   private:
 
@@ -57,17 +57,7 @@ class Land {
     int ALPHA;
     int BETA;
     vector<Point> points;
-    map<string, long long int> point_values_buffer;
-
-    static string int_to_str(int x) {
-        stringstream ss;
-        ss << x;
-        return ss.str();
-    }
-
-    static string get_key_for_point(Point point) {
-        return int_to_str(point.get_x()) + ", " + int_to_str(point.get_y());
-    }
+    vector<long long int> point_values_buffer;
 
     unsigned long long int pow_long_int(unsigned long long int number) {
         return number * number;
@@ -82,14 +72,14 @@ class Land {
         return ALPHA * (MAX_HEIGHT - point.get_y());
     }
 
-    unsigned long long int total_cost(Point first_point, Point second_point) {
-        long long int value = point_values_buffer[get_key_for_point(second_point)];
+    unsigned long long int total_cost(int first_point_index, int second_point_index) {
+        long long int value = point_values_buffer[second_point_index];
         if (value == 0) 
-            return cost_support(first_point) + cost_support(second_point) + cost_arch(first_point, second_point);
+            return cost_support(points[first_point_index]) + cost_support(points[second_point_index]) + cost_arch(points[first_point_index], points[second_point_index]);
         else if (value == IMPOSSIBLE) 
             return IMPOSSIBLE;
         else
-            return cost_support(first_point) + cost_arch(first_point, second_point) + value;
+            return cost_support(points[first_point_index]) + cost_arch(points[first_point_index], points[second_point_index]) + value;
     }
 
     bool valid_arch(int first_point_index, int second_point_index) {
@@ -111,7 +101,7 @@ class Land {
         long long int minimum = IMPOSSIBLE;
         for (int i = index + 1; i < NUM_POINTS; i++) {
             if (valid_arch(index, i)) {
-                long long int cost = total_cost(points[index], points[i]);
+                long long int cost = total_cost(index, i);
                 if (minimum == IMPOSSIBLE || (cost != IMPOSSIBLE && cost < minimum))
                     minimum = cost;
             }
@@ -126,6 +116,7 @@ class Land {
         this->MAX_HEIGHT = height;
         this->ALPHA = alpha;
         this->BETA = beta;
+        this->point_values_buffer.resize(num_points, NON_CALCULATED);
     }
 
     void add_point_to_land(double x, double y) {
@@ -135,9 +126,9 @@ class Land {
     long long int get_minimum_cost() {
         for (int i = NUM_POINTS - 2; i >= 0; i--) {
             long long int minimum = get_minimum_cost_for_index(i);
-            point_values_buffer[get_key_for_point(points[i])] = minimum;
+            point_values_buffer[i] = minimum;
         }
-        return point_values_buffer[get_key_for_point(points[0])];
+        return point_values_buffer[0];
     }
 
 };

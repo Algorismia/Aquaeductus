@@ -48,10 +48,6 @@ class Land:
         else:
             return self.cost_support(self.points[first_point_index]) + self.cost_support(self.points[second_point_index]) + self.cost_arch(self.points[first_point_index], self.points[second_point_index])
 
-    @staticmethod
-    def get_key_for_point(point: Point):
-        return f'{point.x}, {point.y}'
-
     def valid_arch(self, first_point_index: int, second_point_index: int):
         first_point = self.points[first_point_index]
         second_point = self.points[second_point_index]
