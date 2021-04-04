@@ -30,7 +30,7 @@ class Land:
         self.ALPHA = int(ALPHA)
         self.BETA = int(BETA)
         self.points = []
-        self.point_values_buffer = {}
+        self.point_values_buffer = [None] * self.NUM_POINTS
 
     def add_point_to_land(self, x: int, y: int):
         self.points.append(Point(x, y))
@@ -41,12 +41,12 @@ class Land:
     def cost_support(self, point: Point):
         return self.ALPHA * (self.MAX_HEIGHT - point.y)
 
-    def total_cost(self, first_point: Point, second_point: Point):
-        cost_second_point = self.point_values_buffer.get(Land.get_key_for_point(second_point))
+    def total_cost(self, first_point_index: int, second_point_index: int):
+        cost_second_point = self.point_values_buffer[second_point_index]
         if cost_second_point:
-            return self.cost_support(first_point) + self.cost_arch(first_point, second_point) + cost_second_point
+            return self.cost_support(self.points[first_point_index]) + self.cost_arch(self.points[first_point_index], self.points[second_point_index]) + cost_second_point
         else:
-            return self.cost_support(first_point) + self.cost_support(second_point) + self.cost_arch(first_point, second_point)
+            return self.cost_support(self.points[first_point_index]) + self.cost_support(self.points[second_point_index]) + self.cost_arch(self.points[first_point_index], self.points[second_point_index])
 
     @staticmethod
     def get_key_for_point(point: Point):
@@ -70,7 +70,7 @@ class Land:
         minimum = math.inf
         for i in range(index + 1, self.NUM_POINTS):
             if self.valid_arch(index, i):
-                cost_points = self.total_cost(self.points[index], self.points[i])
+                cost_points = self.total_cost(index, i)
                 if cost_points < minimum:
                     minimum = cost_points
         return minimum
@@ -78,8 +78,8 @@ class Land:
     def get_minimum_aqueduct(self):
         for i in range(self.NUM_POINTS - 2, -1, -1):
             minimum_of_this_point = self.get_minimum_cost_for_index(i)
-            self.point_values_buffer[self.get_key_for_point(self.points[i])] = minimum_of_this_point
-        return self.point_values_buffer[self.get_key_for_point(self.points[0])]
+            self.point_values_buffer[i] = minimum_of_this_point
+        return self.point_values_buffer[0]
 
 
 def get_land_from_file(file_name: str) -> Land:
