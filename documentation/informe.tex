@@ -38,8 +38,8 @@
 \makeatletter
 \newcommand\appendix@section[1]{%
   \refstepcounter{section}%
-  \orig@section*{Appendix \@Alph\c@section: #1}%
-  \addcontentsline{toc}{section}{Appendix \@Alph\c@section: #1}%
+  \orig@section*{Apèndix \@Alph\c@section: #1}%
+  \addcontentsline{toc}{section}{Apèndix \@Alph\c@section: #1}%
 }
 \let\orig@section\section
 \g@addto@macro\appendix{\let\section\appendix@section}
