@@ -3,6 +3,7 @@
 \usepackage{tkz-euclide}
 \usetikzlibrary{positioning}
 \usepackage{fancybox}
+\usepackage{texlogos}
 \usepackage{graphicx}
 \usepackage{flafter} % needed for figures
 \usepackage{hyperref} % needed for a clickable table of contents
@@ -354,8 +355,8 @@ $O(n^{3})$
 $O(n^{3})$ 
     
 \section{Problemes/consideracions}
-\subsection{Nombres en c++}
-Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a c++. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a c++ el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer i double, i s'hagués d'utilitzar tipus com per exemple long long int o unsigned long long int.
+\subsection{Nombres en \cpluspluslogo}
+Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer i double, i s'hagués d'utilitzar tipus com per exemple long long int o unsigned long long int.
 
 \section{Conclusions}
 
