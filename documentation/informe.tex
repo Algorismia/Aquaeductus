@@ -73,15 +73,15 @@ cost de $O(n!)$ .
 \newpage
 \subsection{Alternativa a backtracking: Principi d'optimitat}
 Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
-\begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sugui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
+\begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sigui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
 \end{quote}
 
-Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construida eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
+Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construïda eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
 
 % nostre cas d'us
 \subsubsection{Aplicació i funcionament en el nostre cas d'ús}
 \label{seccio:funcionament}
-En el nostre problema dels aqueductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que veiem que la solució és construida eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
+En el nostre problema dels aqüeductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que la solució és construïda eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
 
 
 Donada la següent entrada: 
@@ -105,7 +105,7 @@ Donada la següent entrada:
 \end{center}
 
 
-On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda com la figura \ref{grafic:exemplecoordenades}, en canvi, si ho volem veure en forma de digraf (ja descartant opcions que no són vàlides) ens queda com a resultat la figura \ref{grafic:digraf}\\
+On podem veure que tenim 5 punts, una altura d'aqüeducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda com la figura \ref{grafic:exemplecoordenades}, en canvi, si ho volem examinar en forma de dígraf (ja descartant opcions que no són vàlides) ens queda com a resultat la figura \ref{grafic:digraf}\\
 
 
 \begin{figure}[htbp]
@@ -153,7 +153,7 @@ On podem veure que tenim 5 punts, una altura de aqueducte de 6, $\alpha$ = 180 i
 \end{center}
 \end{figure}
 
-Finalment, anomenarem la funcio $f(x)$ com el minim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
+A continuació, anomenarem la funció $f(x)$ com el mínim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -183,7 +183,7 @@ Finalment, anomenarem la funcio $f(x)$ com el minim cost per anar al node E. En 
 \end{figure}
 
 
-En el cas de $f(D)$, únicament té una opció possible, anar de D a F, per tant el cost minim sera aquest recorregut (figura \ref{resultat:fdeD}).\\
+En el cas de $f(D)$, únicament té una opció possible, anar del node D a F, per tant el cost mínim serà el recorregut mostrat a la figura \ref{resultat:fdeD} i la funció retornarà el valor del cost de crear un pilar a D, més el cost de crear un pilar a F i el cost de crear el arc de D a F.\\
 
 
 \begin{figure}[htbp]
@@ -214,7 +214,7 @@ En el cas de $f(D)$, únicament té una opció possible, anar de D a F, per tant
 \end{figure}
 
 
-En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + $f(D)$ i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + $f(D)$ ens dona 2320. Per tant, el cost minim desde C sera anant de C a E (figura \ref{resultat:fdeC}).\\
+En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + $f(D)$ i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + $f(D)$ ens dona 2320. Per tant, el cost mínim des de C serà anant de C a E (figura \ref{resultat:fdeC}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -242,7 +242,7 @@ En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcula
 \end{center}
 \end{figure}
 
-En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cost de B a E, de B a C + $f(C)$ i de B a D + $f(D)$ i agafarem el minim. En aquest cas el minim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
+En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cost de B a E, de B a C + $f(C)$ i de B a D + $f(D)$ i agafarem el mínim. En aquest cas el mínim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -269,7 +269,7 @@ En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cos
 \end{figure}
 
 
-Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + $f(B)$, de A a C + $f(C)$ i de A a D + $f(D)$ i agafar el minim cost. En aquest cas el minim es de A a E (2780) (figura \ref{resultat:final})
+Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + $f(B)$, de A a C + $f(C)$ i de A a D + $f(D)$ i agafar el mínim cost. En aquest cas el mínim es de A a E (2780) (figura \ref{resultat:final})
 
 
 \begin{figure}[htbp]
@@ -288,15 +288,15 @@ Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + 
     \draw[->, green] (C.east) to[out=-50,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat del aqueducte minim ($f(A)$)}
+    \caption{resultat del aqüeducte mínim ($f(A)$)}
 \label{resultat:final}
 \end{center}
 \end{figure}
 
-% demostracio algorisme
+% demostració algorisme
 \newpage
 \subsubsection{Demostració per reducció al absurd}
-Donat un aqueducte que va d'un punt A a un punt J i que té recorregut R\textsubscript{a...j} és el óptim (figura: \ref{demostracio:atoj}).
+Donat un aqüeducte que va d'un punt A a un punt J i del qual sabem que el recorregut R\textsubscript{a...j} és l'òptim (figura: \ref{demostracio:atoj}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -307,7 +307,7 @@ Donat un aqueducte que va d'un punt A a un punt J i que té recorregut R\textsub
     % lines
     \draw[->] (A.east) -- (J.west) node[midway, below] {R\textsubscript{a...j}};
 \end{tikzpicture}
-\caption{Aqueducte de punt A a punt J}
+\caption{Aqüeducte de punt A a punt J}
 \label{demostracio:atoj}
 \end{center}
 \end{figure}
@@ -325,12 +325,12 @@ Assumirem també que aquest recorregut passa per el punt K, per tant ara podem s
     \draw[->] (A.east) -- (K.west) node[midway, below]{R\textsubscript{a...k}};
     \draw[->] (K.east) -- (J.west) node[midway, below]{R\textsubscript{k...j}};
 \end{tikzpicture}
-\caption{Aqueducte de punt A a punt J passant per K}
+\caption{Aqüeducte de punt A a punt J passant per K}
 \label{demostracio:atoktoj}
 \end{center}
 \end{figure}
 
-A partir de la figura \ref{demostracio:atoktoj}, considerarem que del punt A al punt K pot haver-hi un recorregut mes optim, que anomenarem R'\textsubscript{a...k}.
+Ara donarem com a hipòtesis que del punt A al punt K pot haver-hi un recorregut mes òptim, que anomenarem R'\textsubscript{a...k} (figura \ref{demostracio:atoktojhypotetical}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -344,7 +344,7 @@ A partir de la figura \ref{demostracio:atoktoj}, considerarem que del punt A al 
     \draw[->] (K.east) -- (J.west) node[midway, below]{R\textsubscript{k...j}};
     \draw[->, red] (A) to[out=-70,in=-100] (K) node[xshift =- 2cm, yshift =-1.8cm]{R'\textsubscript{a...k}};
 \end{tikzpicture}
-\caption{Graf que representa un posible R'\textsubscript{a...k}}
+\caption{Graf que representa un possible R'\textsubscript{a...k}}
 \label{demostracio:atoktojhypotetical}
 \end{center}
 \end{figure}
@@ -358,17 +358,17 @@ Llavors:\\
 \textbf{R'\textsubscript{a...k} + R\textsubscript{k...j} < R\textsubscript{a...k} + R\textsubscript{k...j}} \\
 \end{center}
 
-Però aquesta afirmació NO pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
+Però aquesta afirmació \textbf{NO} pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
 
 
 \subsubsection{Especificació formal}
-Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equacio de Bellman (ja que tal i com s'ha dit a la subseccio \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
+Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
 
 \begin{center}
 \begin{equation}
 v(x_{0}) = min(f(x_{0}) + v(x_{1}))
 \end{equation}
-On $v(x)$ es la formula per a calclar el cost minim del aqueducte, $x_{0}$ es el primer pilar del aqueducte i $x_{1}$ es el resultat d'aplicar $v(x)$ al pilar que va despres de $x_{0}$
+On $v(x)$ és la fórmula per a calcular el cost mínim del aqüeducte, $x_{0}$ es el primer pilar del aqüeducte i $x_{1}$ es el resultat d'aplicar $v(x)$ al pilar que va desprès de $x_{0}$
 \end{center}
 
 \section{Cost algorisme}
@@ -379,7 +379,7 @@ $O(n^{3})$
     
 \section{Problemes/consideracions}
 \subsection{Nombres en \cpluspluslogo}
-Primerament es va pensar i elaborar l'algorisme en el llenguatje de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intérpret assigna un tipus a cada variable de forma inteligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren súmament grans i podíen arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
+Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intèrpret assigna un tipus a cada variable de forma intel·ligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren summament grans i podien arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
 
 \section{Conclusions}
 
