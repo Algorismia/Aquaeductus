@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-pedantic -Wall 
+CFLAGS=-pedantic -Wall  -O3
 test := ../test
 
 all: aqueducte
