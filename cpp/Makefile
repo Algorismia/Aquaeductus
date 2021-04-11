@@ -7,7 +7,7 @@ all: aqueducte
 aqueducte: aqueducte.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
-test:
+test: aqueducte
 	for t in $(test)/*.in; do ./aqueducte $$t > sortida; diff -q $(test)/`basename $$t .in`.ans sortida; done
 
 graphic:
