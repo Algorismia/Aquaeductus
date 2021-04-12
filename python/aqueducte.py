@@ -52,7 +52,7 @@ class Land:
         return cost_first_point + cost_arch + cost_second_point
 
     @staticmethod
-    def out_of_circunference(radius_point: Point, radius_value:int, point: Point):
+    def out_of_circunference(radius_point: Point, radius_value: int, point: Point):
         return (pow(radius_point.distance(point), 2) - (pow(radius_value, 2))) > 0
 
     def valid_arch(self, first_point_index: int, second_point_index: int):
@@ -86,13 +86,17 @@ class Land:
 
 
 def get_land_from_file(file_name: str) -> Land:
-    file = open(file_name, "r")
-    lines = file.readlines()
-    first_line = lines[0].split(" ")
-    __land = Land(first_line[0], first_line[1], first_line[2], first_line[3])
-    add_points_to_land(__land, lines[1:])
-    file.close()
-    return __land
+    try:
+        file = open(file_name, "r")
+        lines = file.readlines()
+        num_points, max_height, alpha, beta = lines[0].split(" ")
+        land = Land(num_points, max_height, alpha, beta)
+        add_points_to_land(land, lines[1:])
+        file.close()
+        return land
+    except (FileNotFoundError, ValueError, IndexError):
+        print(f"File {file_name} doesn't exist or has an invalid syntax")
+        sys.exit(-1)
 
 
 def add_points_to_land(land: Land, points: list):
@@ -101,13 +105,22 @@ def add_points_to_land(land: Land, points: list):
         land.add_point_to_land(int(x_coord), int(y_coord))
 
 
+def get_file_name() -> str:
+    if len(sys.argv) == 2:
+        return sys.argv[1]
+    file_name = input("Enter file name: ")
+    return file_name
+
+
 def main():
-    land = get_land_from_file(sys.argv[1])
+    file_name = get_file_name()
+    land = get_land_from_file(file_name)
     value = land.get_minimum_aqueduct()
     if value == math.inf:
         print("impossible")
     else:
         print(value)
+
 
 if __name__ == "__main__":
     main()

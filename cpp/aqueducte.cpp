@@ -134,32 +134,44 @@ class Land {
 };
 
 Land get_land_from_file(string file_name) {
-    string line;
-    ifstream myfile;
-    myfile.open(file_name);
-    getline(myfile, line);
-    stringstream ss(line);
-    string word;
-    string constructor[4];
-    for (int i = 0; ss >> word; i++) {
-        constructor[i] = word;
-    }
-    Land land = Land(stoi(constructor[0]), stoi(constructor[1]), stoi(constructor[2]), stoi(constructor[3]));
-    while(getline(myfile, line)) {
-        stringstream ss2(line);
-        string word2;
-        string coord[2];
-        for (int i = 0; ss2 >> word2; i++) {
-            coord[i] = word2;
+    try {
+        string line;
+        ifstream myfile;
+        myfile.open(file_name);
+        getline(myfile, line);
+        stringstream ss(line);
+        string word;
+        string constructor[4];
+        for (int i = 0; ss >> word; i++)
+            constructor[i] = word;
+        Land land = Land(stoi(constructor[0]), stoi(constructor[1]), stoi(constructor[2]), stoi(constructor[3]));
+        while(getline(myfile, line)) {
+            stringstream ss2(line);
+            string word2;
+            string coord[2];
+            for (int i = 0; ss2 >> word2; i++)
+                coord[i] = word2;
+            land.add_point_to_land(stod(coord[0]), stod(coord[1]));
         }
-        land.add_point_to_land(stod(coord[0]), stod(coord[1]));
+        myfile.close();
+        return land;
+    } catch (exception& e) {
+        cout << "File " << file_name << " doesn't exist or has invalid syntax \n"; 
+        exit(-1);
     }
-    myfile.close();
-    return land;
+}
+
+string get_file_name(int argc, char **argv) {
+    if (argc == 2)
+        return argv[1];
+    string file_name;
+    cout << "Enter file name: ";
+    cin >> file_name;
+    return file_name;
 }
 
 int main(int argc, char **argv) {
-    string file_name = argv[1];
+    string file_name = get_file_name(argc, argv);
     Land land = get_land_from_file(file_name);
     long long int minimum = land.get_minimum_cost();
     string result = minimum == IMPOSSIBLE ? "impossible" : to_string(minimum);
