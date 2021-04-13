@@ -98,7 +98,7 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
 \end{figure}
 
 \subsubsection{Per què no utilitzar Backtracking en aquest cas}
-El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del sòl. En canvi, veiem que l'algorisme mitjançant backtracking té un cost de $O(n!)$, per tant no ens serveix.
+El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del sòl. En canvi, veiem que l'algorisme mitjançant backtracking té un cost de $O(n!)$, per tant no ens serveix. Igualment, s'ha decidit deixar el codi de backtracking en una branch del repositori anomenada \textit{backtracking} \footnote{No s'ha de confondre amb la branch \textit{main}, que es la versió final amb un cost de $O(n^{3})$.}
 
 % principi optimitat
 \newpage
@@ -426,7 +426,27 @@ Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3
 \subsection{Recursiu}
 Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu, el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no 
 memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
+
+\subsection{Empíric}
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{python-benchmarks}
+    \centering
+    \caption{Cost empíric en Python}
+    \label{fig:python-benchmark}
+\end{figure}
     
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{cpp-benchmarks}
+    \centering
+    \caption{Cost empíric en \cpluspluslogo}
+    \label{fig:cpp-benchmark}
+\end{figure}
+
+Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:python-benchmark}), ja que sino el temps d'execució ja era sumament lent, mentres que 
+amb \cpluspluslogo (figura \ref{fig:cpp-benchmark}), si que es van poder fer execucions fins N=5000.\\
+Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
+
+
 \section{Problemes al realitzar la pràctica}
 \subsection{Nombres en \cpluspluslogo}
 Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intèrpret assigna un tipus a cada variable de forma intel·ligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren summament grans i podien arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
@@ -439,6 +459,15 @@ Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació
 \item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
 \end{enumerate}
 \section{Conclusions}
+Aquesta pràctica m'ha servit per adquirir els següents coneixements:
+\begin{itemize}
+    \item Comprendre i implementar un algorisme mitjançant backtracking.
+    \item Aprendre les bases de la programació funcional i veure quina millora afegíen en aquest algorisme.
+    \item Iniciarme en la programació en \cpluspluslogo.
+    \item Analitzar els diferents costs (empírics i teòrics) d'un algorisme.
+    \item Convertir un algorisme iteratiu a recursiu.
+    \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
+\end{itemize}
 
 \appendix
 \section{Pseudocodi algorisme iteratiu}
