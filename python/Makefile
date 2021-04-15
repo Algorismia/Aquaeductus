@@ -5,13 +5,16 @@ all: test
 
 # pylint without docstring warnings (the code is self-explanatory without comment)
 pylint:
-	echo "pylint result:" 
 	pylint --disable=missing-docstring aqueducte.py
+	pylint --disable=missing-docstring aqueducte_recursive.py
 
-testonly:
+iterative:
 	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
 
-test: testonly pylint
+recursive:
+	for t in $(test)/*.in; do $(interpreter) aqueducte_recursive.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
+
+test: iterative pylint
 
 clean:
 	rm -rf sortida

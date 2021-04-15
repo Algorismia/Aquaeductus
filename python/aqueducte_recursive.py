@@ -96,11 +96,16 @@ class Land:
                     minimum = cost_points
         return minimum
 
+    def get_minimum_aqueduct_recursive(self, index: int):
+        if index == 0:
+            minimum_of_this_point = self.get_minimum_cost_for_index(index)
+            return minimum_of_this_point
+        self.point_values_buffer[index] = self.get_minimum_cost_for_index(index)
+        return self.get_minimum_aqueduct_recursive(index - 1)
+
+    # wrapper for recursive function
     def get_minimum_aqueduct(self):
-        for i in range(self.num_points - 2, -1, -1):
-            minimum_of_this_point = self.get_minimum_cost_for_index(i)
-            self.point_values_buffer[i] = minimum_of_this_point
-        return self.point_values_buffer[0]
+        return self.get_minimum_aqueduct_recursive(self.num_points - 2)
 
 
 def get_land_from_file(my_file) -> Land:
@@ -110,7 +115,6 @@ def get_land_from_file(my_file) -> Land:
         add_points_to_land(land, lines[1:])
         my_file.close()
         return land
-
 
 def add_points_to_land(land: Land, points: list):
     for point in points:
@@ -125,8 +129,9 @@ def get_file():
 
 
 def main():
-    file_aqueduct = get_file()
-    land = get_land_from_file(file_aqueduct)
+    sys.setrecursionlimit(100000)
+    file_name = get_file()
+    land = get_land_from_file(file_name)
     value = land.get_minimum_aqueduct()
     if value == math.inf:
         print("impossible")

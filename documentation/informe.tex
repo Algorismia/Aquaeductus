@@ -15,7 +15,13 @@
 \setmainlanguage{catalan}
 \usepackage{listings}
 \usepackage{appendix}
+\usepackage{pythonhighlight}
 \graphicspath{ {images/} }
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+}
 
 % centered box
 \makeatletter
@@ -404,7 +410,7 @@ Precondició :
 \end{itemize}
 Postcondició: cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ i $\beta$ o $\infty$ en cas de que no sigui possible \footnote{Ja que tal i com es comentava a classe, havía de retornar un tipus, en aquest cas un enter o infinit. Realment en cas del programa s'ha de treure un enter si és possible o una cadena de carácters dient que és impossible}:\\
 
-        $ resultat \in \mathbb{N} \land resultat \leq \max(R) $, on R és el conjunt de possibles resultats.
+        $ resultat \in \mathbb{N} \land resultat \leq \min(R) $, on R és el conjunt de possibles resultats.
 
 
  
@@ -457,6 +463,9 @@ Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació
     comentaris per cadascún dels métodes i clases.
 \item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
 \item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
+\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
+    de python o \cpluspluslogo.
+\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
 \end{enumerate}
 \section{Conclusions}
 Aquesta pràctica m'ha servit per adquirir els següents coneixements:
@@ -469,11 +478,45 @@ Aquesta pràctica m'ha servit per adquirir els següents coneixements:
     \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
 \end{itemize}
 
+\newpage
+
 \appendix
 \section{Pseudocodi algorisme iteratiu}
 \label{pseudocodiiteratiu}
 
+\begin{python}
+def get_minimum_aqueduct(self):
+    for i in range(self.num_points - 2, -1, -1):
+        minimum_of_this_point = self.get_minimum_cost_for_index(i)
+        self.point_values_buffer[i] = minimum_of_this_point
+    return self.point_values_buffer[0]
+\end{python}
+
 \section{Pseudocodi algorisme recursiu}
+El codi recursiu és molt similar al iteratiu. De fet, l'únic que s'ha fet és pensar el cas base (quan el índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres que disminueix el prefix fins arribar al cas 
+base (índex 0, on el sufix és tota l'array mentres que el prefix és 0).
+
+Igualment, per a mantindre la concordança de codi amb la versió iterativa, s'ha decidit fer una funció que serveix de \textit{wrapper} per a amagar que realment estem cridant a una solució recursiva.
 \label{pseudocodirecursiu}
+\begin{python}
+def get_minimum_aqueduct_recursive(self, index: int):
+    if index == 0:
+        minimum_of_this_point = self.get_minimum_cost_for_index(index)
+        return minimum_of_this_point
+    self.point_values_buffer[index] = self.get_minimum_cost_for_index(index)
+    return self.get_minimum_aqueduct_recursive(index - 1)
+
+# wrapper for recursive function
+def get_minimum_aqueduct(self):
+    return self.get_minimum_aqueduct_recursive(self.num_points - 2)
+\end{python}
+
+\section{Repositori github}
+\label{github}
+
+El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus}{aquí}. Tal i com s'ha anat comentant al informe, hi ha una branch que és la resolució final (branch: main) i una altra que conté el codi de backtracking (branch: backtracking).
+Recalcar que, la versió de backtracking, no té el codi tant pulit com la versió final ja que no era el objectiu de la pràctica.
+
+
 
 \end{document}
