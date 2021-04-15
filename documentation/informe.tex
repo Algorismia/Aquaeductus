@@ -5,6 +5,7 @@
 \usepackage{amssymb}
 \usepackage{tkz-euclide}
 \usetikzlibrary{positioning}
+\usepackage{hyperref}
 \usepackage{fancybox}
 \usepackage{texlogos}
 \usepackage{graphicx}
@@ -17,11 +18,6 @@
 \usepackage{appendix}
 \usepackage{pythonhighlight}
 \graphicspath{ {images/} }
-
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-}
 
 % centered box
 \makeatletter
@@ -59,12 +55,19 @@
 \author{Pablo Fraile Alonso}
 \date{\today}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+}
+
 % document
 \begin{document}
 % title
 \maketitle
 \thispagestyle{empty}
 \newpage
+\phantomsection
 \tableofcontents
 \listoffigures
 \newpage
@@ -109,6 +112,7 @@ El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del s�
 % principi optimitat
 \newpage
 \subsection{Alternativa a backtracking: Principi d'optimitat}
+\label{optimal-explanation}
 Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
 \begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sigui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
 \end{quote}
@@ -483,6 +487,8 @@ Aquesta pràctica m'ha servit per adquirir els següents coneixements:
 \appendix
 \section{Pseudocodi algorisme iteratiu}
 \label{pseudocodiiteratiu}
+El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per a no haver 
+de tornar a calcular valors mínims de punts que ja havíem resolt anteriorment.
 
 \begin{python}
 def get_minimum_aqueduct(self):
@@ -494,7 +500,7 @@ def get_minimum_aqueduct(self):
 
 \section{Pseudocodi algorisme recursiu}
 El codi recursiu és molt similar al iteratiu. De fet, l'únic que s'ha fet és pensar el cas base (quan el índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres que disminueix el prefix fins arribar al cas 
-base (índex 0, on el sufix és tota l'array mentres que el prefix és 0).
+base (índex 0, on el sufix és tota l'array mentres que el prefix és inexistent).
 
 Igualment, per a mantindre la concordança de codi amb la versió iterativa, s'ha decidit fer una funció que serveix de \textit{wrapper} per a amagar que realment estem cridant a una solució recursiva.
 \label{pseudocodirecursiu}
@@ -516,7 +522,5 @@ def get_minimum_aqueduct(self):
 
 El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus}{aquí}. Tal i com s'ha anat comentant al informe, hi ha una branch que és la resolució final (branch: main) i una altra que conté el codi de backtracking (branch: backtracking).
 Recalcar que, la versió de backtracking, no té el codi tant pulit com la versió final ja que no era el objectiu de la pràctica.
-
-
 
 \end{document}
