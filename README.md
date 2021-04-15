@@ -24,7 +24,7 @@ If you would like to know more about how it works, I would totally recommend rea
 
 ### Python
 
-For python, if you would like to run the tests and the code analysis tool, you would have to do:
+For python, if you want to run the tests (for the iterative version) and the code analysis tool (for the recursive and iterative version) do:
 
 ``` 
     $ make test
@@ -46,6 +46,11 @@ For default, the Makefile uses python as his interpreter. If you would like to c
 
 ``` bash
 interpreter=pypy3
+```
+
+If you want to run the **RECURSIVE** tests, do:
+``` 
+    $ make recursive
 ```
 
 ### C++
