@@ -15,7 +15,6 @@ although it has enough visual resources to understand how everything was done.
 ``` 
 ├── cpp                 --> cpp code (iterative version)
 ├── documentation       --> report of the assignment in .pdf and .tex (just in case you want to contribute or read how some resources were done)
-├── graphic-sampling    --> files for getting the graph data
 ├── python              --> python code (iterative and recursive version)
 ├── README.md
 └── test                --> test files
