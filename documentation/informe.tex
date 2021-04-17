@@ -77,8 +77,8 @@
 
 % backtracking
 \subsection{Primera idea: Backtracking}
-La primera idea que es va provar per solucionar el problema va ser anar provant totes les diferents solucions i quedar-se amb la més òptima. Òbviament, les solucions no vàlides es podien anar descartant per poder estalviar temps. Aquesta tècnica s'anomena backtracking.  Una
-resolució mitjançant backtracking per anar del punt A al punt D on es pot crear arcs entre tots els punts sería la figura \ref{exemple:backtracking}.
+Primerament es va provar calcular totes les diferents solucions i quedar-se amb la més òptima. Òbviament, les solucions no vàlides es podien anar descartant per estalviar temps. Aquesta tècnica s'anomena backtracking.  Una
+resolució pera trobar tots els camins per anar del punt A al punt D mitjançant backtracking seria la figura \ref{exemple:backtracking}.
 
 \begin{figure}[htbp]
 \begin{center}
@@ -107,7 +107,7 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
 \end{figure}
 
 \subsubsection{Per què no utilitzar Backtracking en aquest cas}
-El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del sòl. En canvi, veiem que l'algorisme mitjançant backtracking té un cost de $O(n!)$, per tant no ens serveix. Igualment, s'ha decidit deixar el codi de backtracking en una branch del repositori anomenada \textit{backtracking} \footnote{No s'ha de confondre amb la branch \textit{main}, que es la versió final amb un cost de $O(n^{3})$.}
+El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del sòl. En canvi, veiem que l'algorisme mitjançant backtracking té un cost de $O(n!)$, per tant, no ens serveix. Igualment, s'ha decidit deixar el codi en una branch del repositori a github anomenada \textit{backtracking}.\footnote{No s'ha de confondre amb la branch \textit{main}, que és la versió final amb un cost de $O(n^{3})$.}
 
 % principi optimitat
 \newpage
@@ -117,12 +117,12 @@ Abans de poder comentar la solució, hem d'entendre que és el principi d'optimi
 \begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sigui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
 \end{quote}
 
-Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construïda eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
+Segons aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construïda eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, podem resoldre un problema gran donades les solucions dels seus problemes petits.
 
 % nostre cas d'us
 \subsubsection{Aplicació i funcionament en el nostre cas d'ús}
 \label{seccio:funcionament}
-En el nostre problema dels aqüeductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que la solució és construïda eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
+En el nostre problema dels aqüeductes veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que la solució és construïda eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
 
 
 Donada la següent entrada: 
@@ -146,8 +146,7 @@ Donada la següent entrada:
 \end{center}
 
 
-On podem veure que tenim 5 punts, una altura d'aqüeducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda com la figura \ref{grafic:exemplecoordenades}, en canvi, si ho volem examinar en forma de dígraf (ja descartant opcions que no són vàlides) ens queda com a resultat la figura \ref{grafic:digraf}\\
-
+Podem veure que tenim 5 punts, una altura d'aqüeducte de 6, $\alpha$ = 180 i $\beta$ = 20. Si ho representem en un eix de coordenades, el perfil del sòl ens queda com la figura \ref{grafic:exemplecoordenades}, en canvi, si ho volem examinar en forma de dígraf (ja descartant opcions que no són vàlides) ens queda com a resultat la figura \ref{grafic:digraf}. \\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -194,7 +193,7 @@ On podem veure que tenim 5 punts, una altura d'aqüeducte de 6, $\alpha$ = 180 i
 \end{center}
 \end{figure}
 
-A continuació, anomenarem la funció $f(x)$ com el mínim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
+A continuació anomenarem la funció $f(x)$ com el mínim cost per anar al node E. En el cas d'estar al propi node E, aquesta funció retornarà 0 (figura \ref{resultat:fdeE}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -218,13 +217,13 @@ A continuació, anomenarem la funció $f(x)$ com el mínim cost per anar al node
     \draw[->] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat de $f(E)$}
+\caption{Resultat de $f(E)$}
 \label{resultat:fdeE}
 \end{center}
 \end{figure}
 
 
-En el cas de $f(D)$, únicament té una opció possible, anar del node D a F, per tant el cost mínim serà el recorregut mostrat a la figura \ref{resultat:fdeD} i la funció retornarà el valor del cost de crear un pilar a D, més el cost de crear un pilar a F i el cost de crear el arc de D a F.\\
+En el cas de $f(D)$ únicament té una opció possible: anar del node D a F. Per tant, el cost mínim serà el recorregut mostrat a la figura \ref{resultat:fdeD}. La funció retornarà el valor del cost de crear un pilar a D, més el cost de crear un pilar a F i el cost de crear el arc de D a F.\\
 
 
 \begin{figure}[htbp]
@@ -249,13 +248,13 @@ En el cas de $f(D)$, únicament té una opció possible, anar del node D a F, pe
     \draw[->] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat de $f(D)$}
+\caption{Resultat de $f(D)$}
 \label{resultat:fdeD}
 \end{center}
 \end{figure}
 
 
-En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el cost de C a D + $f(D)$ i agafarem el mínim. Calculem cost de C a E i ens dona 1940, en canvi, el cost de C a D + $f(D)$ ens dona 2320. Per tant, el cost mínim des de C serà anant de C a E (figura \ref{resultat:fdeC}).\\
+En el cas de $f(C)$ hi ha l'opció d'anar a D o d'anar a E. En aquest cas calcularem el cost de C a E i el compararem amb el cost de C a D + $f(D)$. Agafarem el mínim. Per exemple, en el nostre cas, el cost de C a E ens dona 1940, en canvi, el cost de C a D + $f(D)$ és 2320. Per tant, el cost mínim de C serà el primer (de C a D) (figura \ref{resultat:fdeC}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -278,12 +277,12 @@ En el cas de $f(C)$, té l'opció d'anar a D o d'anar a E. En aquest cas calcula
     \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat de $f(C)$}
+\caption{Resultat de $f(C)$}
 \label{resultat:fdeC}
 \end{center}
 \end{figure}
 
-En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cost de B a E, de B a C + $f(C)$ i de B a D + $f(D)$ i agafarem el mínim. En aquest cas el mínim es de B a E (1940) (figura \ref{resultat:fdeB}).\\
+En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cost de B a E, de B a C + $f(C)$ i de B a D + $f(D)$ i de nou, agafarem el mínim. En aquest cas, el mínim és de B a E (1940) (figura \ref{resultat:fdeB}).\\
 
 \begin{figure}[htbp]
 \begin{center}
@@ -304,13 +303,13 @@ En el cas de $f(B)$, farem el mateix que amb $f(C)$. Calcularem quant val el cos
     \draw[->, green] (C.east) to[out=-20,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat de $f(B)$}
+\caption{Resultat de $f(B)$}
 \label{resultat:fdeB}
 \end{center}
 \end{figure}
 
 
-Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + $f(B)$, de A a C + $f(C)$ i de A a D + $f(D)$ i agafar el mínim cost. En aquest cas el mínim es de A a E (2780) (figura \ref{resultat:final})
+Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + $f(B)$, de A a C + $f(C)$ i de A a D + $f(D)$ i agafar el mínim cost. En aquest cas, el mínim és de A a E (2780) (figura \ref{resultat:final}).
 
 
 \begin{figure}[htbp]
@@ -329,7 +328,7 @@ Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + 
     \draw[->, green] (C.east) to[out=-50,in=-130] (E.west);
     \draw[->, green] (D.east) -- (E.west);
 \end{tikzpicture}
-    \caption{resultat del aqüeducte mínim ($f(A)$)}
+\caption{Resultat del aqüeducte mínim ($f(A)$)}
 \label{resultat:final}
 \end{center}
 \end{figure}
@@ -337,7 +336,7 @@ Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + 
 % demostració algorisme
 \newpage
 \subsubsection{Demostració per reducció al absurd}
-Donat un aqüeducte que va d'un punt A a un punt J i del qual sabem que el recorregut R\textsubscript{a...j} és l'òptim (figura: \ref{demostracio:atoj}).
+Donat un aqüeducte que va d'un punt A a un punt J i del qual sabem que el recorregut R\textsubscript{a...j} és l'òptim (figura \ref{demostracio:atoj}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -353,7 +352,7 @@ Donat un aqüeducte que va d'un punt A a un punt J i del qual sabem que el recor
 \end{center}
 \end{figure}
 
-Assumirem també que aquest recorregut passa per el punt K, per tant ara podem separar el recorregut com R\textsubscript{a...k} \& R\textsubscript{k...j} (figura \ref{demostracio:atoktoj})
+Assumint també que aquest recorregut passa per el punt K, per la qual cosa podem separar el recorregut com R\textsubscript{a...k} \& R\textsubscript{k...j} (figura \ref{demostracio:atoktoj}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -371,7 +370,7 @@ Assumirem també que aquest recorregut passa per el punt K, per tant ara podem s
 \end{center}
 \end{figure}
 
-Ara donarem com a hipòtesis que del punt A al punt K pot haver-hi un recorregut mes òptim, que anomenarem R'\textsubscript{a...k} (figura \ref{demostracio:atoktojhypotetical}).
+Donarem com a hipòtesis que del punt A al punt K pot haver-hi un recorregut mes òptim que anomenarem R'\textsubscript{a...k} (figura \ref{demostracio:atoktojhypotetical}).
 
 \begin{figure}[htbp]
 \begin{center}
@@ -385,7 +384,7 @@ Ara donarem com a hipòtesis que del punt A al punt K pot haver-hi un recorregut
     \draw[->] (K.east) -- (J.west) node[midway, below]{R\textsubscript{k...j}};
     \draw[->, red] (A) to[out=-70,in=-100] (K) node[xshift =- 2cm, yshift =-1.8cm]{R'\textsubscript{a...k}};
 \end{tikzpicture}
-\caption{Graf que representa un possible R'\textsubscript{a...k}}
+\caption{Dígraf que representa un possible R'\textsubscript{a...k}}
 \label{demostracio:atoktojhypotetical}
 \end{center}
 \end{figure}
@@ -394,16 +393,18 @@ Si R'\textsubscript{a...k} és més òptim que R\textsubscript{a...k}, llavors v
 \begin{center}
 R'\textsubscript{a...k} < R\textsubscript{a...k}.\\
 \end{center}
-Llavors:\\
+Per tant:\\
 \begin{center}
 \textbf{R'\textsubscript{a...k} + R\textsubscript{k...j} < R\textsubscript{a...k} + R\textsubscript{k...j}} \\
 \end{center}
 
-Però aquesta afirmació \textbf{NO} pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
+Però aquesta afirmació \textbf{NO} pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i, com a conseqüència, no pot haver-hi cap més petita que aquesta.
 
 
 \subsubsection{Especificació formal}
-Precondició :
+
+\textbf{Precondició :}
+
 \begin{itemize}
     \item Una altura màxima del aqueducte (h), on ($1 \leq h \leq 10^5$)
     \item Els factors de cost $\alpha$ i $\beta$, on ($1\leq \alpha, \beta \leq 10^4$)
@@ -412,30 +413,31 @@ Precondició :
         \land x\textsubscript{i} (0\leq x\textsubscript{1} < x\textsubscript{2} < ... < x\textsubscript{n} \leq 10^5) \land y (0 \leq y\textsubscript{i} < h) $
 
 \end{itemize}
-Postcondició: cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ i $\beta$ o $\infty$ en cas de que no sigui possible \footnote{Ja que tal i com es comentava a classe, havía de retornar un tipus, en aquest cas un enter o infinit. Realment en cas del programa s'ha de treure un enter si és possible o una cadena de carácters dient que és impossible}:\\
+
+\textbf{Postcondició:} cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ i $\beta$ o $\infty$ en cas de que no sigui possible \footnote{Ja que, tal i com es comentava a classe, havia de retornar un tipus (en aquest cas, un enter o infinit). Tot i que en aquest programa s'ha de treure un enter si és possible o una cadena de caràcters dient que és impossible.}:\\
 
         $ resultat \in \mathbb{N} \land resultat \leq \min(R) $, on R és el conjunt de possibles resultats.
 
 
  
-\subsubsection{Formula algorisme}
-Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
-
+\subsubsection{Fórmula algorisme}
+Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament és correcte, podem especificar-ho amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
 \begin{center}
 \begin{equation}
 v(x_{0}) = min(f(x_{0}) + v(x_{1}))
 \end{equation}
-On $v(x)$ és la fórmula per a calcular el cost mínim del aqüeducte, $x_{0}$ es el primer pilar del aqüeducte i $x_{1}$ es el resultat d'aplicar $v(x)$ al pilar que va desprès de $x_{0}$
 \end{center}
 
-\section{Cost algorisme}
+On $v(x)$ és la fórmula per calcular el cost mínim del aqüeducte, $x_{0}$ és el primer pilar del aqüeducte i $x_{1}$ és el resultat d'aplicar $v(x)$ al pilar que va desprès de $x_{0}$.
+
+\section{Cost de l'algorisme}
 \subsection{Iteratiu}
-Veiem que el programa té 3 bucles anidats, i que en el pitjor dels casos (quan estem analitzant el primer punt, $p\textsubscript{0}$) haurem recorregut els tres $n^3$ cops.
-Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3})$.
+Veiem que el programa té 3 bucles anidats i, en el pitjor dels casos, recorrerem $n^3$ cops.
+Per tant podem dir que el cost de l'algorisme en forma iterativa és $O(n^{3})$.
 
 \subsection{Recursiu}
 Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu, el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no 
-memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
+memòria de heap, la qual cosa el programa serà més propens a sofrir un \textit{stackoverflow}. Finalment, podem dir que el cost és $O(n^{3})$.
 
 \subsection{Empíric}
 \begin{figure}[h!]
@@ -452,34 +454,37 @@ memòria de heap, per tant el programa es més propens a sofrir un \textit{stack
     \label{fig:cpp-benchmark}
 \end{figure}
 
-Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:python-benchmark}), ja que sino el temps d'execució ja era sumament lent, mentres que 
-amb \cpluspluslogo (figura \ref{fig:cpp-benchmark}), si que es van poder fer execucions fins N=5000.\\
-Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
+Recalcar que a Python es van fer els tests fins N=1450 (figura \ref{fig:python-benchmark}) ja que, a partir de N=900, el temps d'execució era summament lent. En canvi, amb \cpluspluslogo  (figura \ref{fig:cpp-benchmark}) si que es van poder fer execucions fins N=5000.\\
+Igualment es pot apreciar que les dos gràfiques surten similars a una funció $O(n^{3})$.
 
 
 \section{Problemes al realitzar la pràctica}
 \subsection{Nombres en \cpluspluslogo}
-Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intèrpret assigna un tipus a cada variable de forma intel·ligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren summament grans i podien arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
+Primerament es va desenvolupar l'algorisme en el llenguatge de programació python i, a continuació, es va migrar el codi a \cpluspluslogo. 
+Però, no es va pensar que python funciona amb tipus dinàmics i és el mateix intèrpret qui assigna un tipus a cada variable de forma intel·ligent,
+mentre que a \cpluspluslogo  ,\space el propi programador és qui assigna els tipus. Això va generar un problema, ja que, com els tests eren summament grans i
+podien arribar a fer operacions de $10000^{2}$, el rang del tipus integer no era suficient, i es va haver d'utilitzar altres tipus amb un rang superior com, per exemple,
+``long long int" o ``unsigned long long int".
 
 \section{Consideracions}
 \begin{enumerate}
-\item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els "warnings" provocats per no tindre
-    comentaris per cadascún dels métodes i clases.
-\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
-\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
-\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
-    de python o \cpluspluslogo.
-\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
+\item Al arxiu Makefile del projecte de python s'ha afegit una opció per executar el test de llegibilitat de codi mitjançant l'eina pylint. S'ha habilitat l'opció d'ignorar els "warnings" provocats per no generar
+    comentaris per cadascun dels mètodes i classes.
+\item S'han mogut tots els tests a un directori anomenat \textit{test} ja que, com s'ha fet la pràctica en python i \cpluspluslogo, si no es separaven, els mateixos tests es duplicaven en dues carpetes diferents. 
+\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo \space porti habilitades les opcions d'optimització O3 ja que, en cas contrari, el rendiment baixava considerablement.
+\item El codi no inclou anàlisi d'errors sobre el fitxer proporcionat. En cas de que el format/fitxer sigui erroni es veurà l'excepció corresponent 
+de python o \cpluspluslogo.
+\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la seva mida no és infinita i, per tant, en cas d'una N molt gran, el programa llançarà un error de recursivitat.
 \end{enumerate}
 \section{Conclusions}
 Aquesta pràctica m'ha servit per adquirir els següents coneixements:
 \begin{itemize}
     \item Comprendre i implementar un algorisme mitjançant backtracking.
-    \item Aprendre les bases de la programació funcional i veure quina millora afegíen en aquest algorisme.
-    \item Iniciarme en la programació en \cpluspluslogo.
+    \item Aprendre les bases de la programació dinàmica i veure quina millora proporcionaven en aquest cas.
+    \item Iniciar-me en la programació en \cpluspluslogo.
     \item Analitzar els diferents costs (empírics i teòrics) d'un algorisme.
     \item Convertir un algorisme iteratiu a recursiu.
-    \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
+    \item Crear un informe mitjançant {\LaTeX}, que facilita l'ús d'expressions lògiques, matemàtiques i grafs.
 \end{itemize}
 
 \newpage
@@ -487,8 +492,11 @@ Aquesta pràctica m'ha servit per adquirir els següents coneixements:
 \appendix
 \section{Pseudocodi algorisme iteratiu}
 \label{pseudocodiiteratiu}
-El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per a no haver 
-de tornar a calcular valors mínims de punts que ja havíem resolt anteriorment.
+El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. \\
+
+Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per no tornar 
+a calcular valors mínims de punts que ja havíem resolt amb anterioritat.
+
 
 \begin{python}
 def get_minimum_aqueduct(self):
@@ -499,10 +507,10 @@ def get_minimum_aqueduct(self):
 \end{python}
 
 \section{Pseudocodi algorisme recursiu}
-El codi recursiu és molt similar al iteratiu. De fet, l'únic que s'ha fet és pensar el cas base (quan el índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres que disminueix el prefix fins arribar al cas 
-base (índex 0, on el sufix és tota l'array mentres que el prefix és inexistent).
+El codi recursiu és molt similar al iteratiu. De fet, l'única diferència és pensar el cas base (quan l'índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres disminueix el prefix fins arribar al cas 
+base (índex 0, on el sufix és tota l'array mentre que el prefix és inexistent).
 
-Igualment, per a mantindre la concordança de codi amb la versió iterativa, s'ha decidit fer una funció que serveix de \textit{wrapper} per a amagar que realment estem cridant a una solució recursiva.
+Igualment, per mantindre la concordança de codi amb la versió iterativa, s'ha decidit fer una funció que serveix de \textit{wrapper} per amagar que realment estem cridant a una solució recursiva.
 \label{pseudocodirecursiu}
 \begin{python}
 def get_minimum_aqueduct_recursive(self, index: int):
@@ -520,7 +528,7 @@ def get_minimum_aqueduct(self):
 \section{Repositori github}
 \label{github}
 
-El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus}{aquí}. Tal i com s'ha anat comentant al informe, hi ha una branch que és la resolució final (branch: main) i una altra que conté el codi de backtracking (branch: backtracking).
-Recalcar que, la versió de backtracking, no té el codi tant pulit com la versió final ja que no era el objectiu de la pràctica.
+El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus}{aquí}. Tal i com s'ha comentat anteriorment hi ha dues branques: la branca que inclou el codi final (branch: main) i la que conté el codi de backtracking (branch: backtracking).
+Recalcar que la versió de backtracking no té el codi tant polit com la versió final, ja que no és l'objectiu d'aquesta pràctica.
 
 \end{document}
