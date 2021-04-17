@@ -33,7 +33,7 @@ If you want to run the tests (for the iterative version) and the code analysis t
 If you would like to run only the test of the iterative version:
 
 ``` 
-    $ make onlytest
+    $ make iterative
 ```
 
 If you want to run the **RECURSIVE** tests, do:

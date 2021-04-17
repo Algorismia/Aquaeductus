@@ -104,12 +104,12 @@ class Land:
 
 
 def get_land_from_file(my_file) -> Land:
-        lines = my_file.readlines()
-        num_points, max_height, alpha, beta = lines[0].split(" ")
-        land = Land(num_points, max_height, alpha, beta)
-        add_points_to_land(land, lines[1:])
-        my_file.close()
-        return land
+    lines = my_file.readlines()
+    num_points, max_height, alpha, beta = lines[0].split(" ")
+    land = Land(num_points, max_height, alpha, beta)
+    add_points_to_land(land, lines[1:])
+    my_file.close()
+    return land
 
 
 def add_points_to_land(land: Land, points: list):
