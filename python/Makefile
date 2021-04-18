@@ -1,5 +1,5 @@
 test := ../test
-interpreter=pypy3
+interpreter=python3
 
 all: test
 
