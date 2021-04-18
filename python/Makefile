@@ -12,9 +12,9 @@ iterative:
 	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
 
 recursive:
-	for t in $(test)/*.in; do $(interpreter) aqueducte_recursive.py $$t > sortida-rec; diff -q -w $(test)/`basename $$t .in`.ans sortida-rec; done
+	for t in $(test)/*.in; do $(interpreter) aqueducte_recursive.py $$t > sortidarec; diff -q -w $(test)/`basename $$t .in`.ans sortidarec; done
 
 test: iterative pylint
 
 clean:
-	rm -rf sortida sortida-rec
+	rm -rf sortida sortidarec
