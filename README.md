@@ -10,6 +10,9 @@ The solution is based on the [principle of optimality of Bellman](https://en.wik
 If you would like to know more about how it works, I would totally recommend reading the report of this assignment, which is found in documentation/informe.pdf. Emphasize that the report is written in Catalan,
 although it has enough visual resources to understand how everything was done.
 
+## Where to find the project ⁉️:
+The project can be found in [this github repository](https://github.com/Algorismia/Aquaeductus)
+
 ## Project structure 📁:
 
 ``` 
